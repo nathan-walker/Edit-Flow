@@ -27,6 +27,26 @@ function my_callback( $arg ) {
 }
 ```
 
+#### ef_module_registered
+
+**Description**
+
+Fires after edit_flow has registered a module.
+
+Plugin authors can hook into this action to trigger functionaltiy after a module has been loaded.
+
+**Examples**
+
+```
+add_action( 'ef_module_registered', 'my_callback' );
+
+function my_callback( $module_name ) {
+	if ( $module_name === 'calendar' ) {
+		//Do something after the Calendar module is registered
+	}
+}
+```
+
 #### ef_modules_loaded
 
 **Description**
@@ -67,9 +87,31 @@ add_action( 'ef_module_options_loaded', 'my_callback' );
 function my_callback() {
 	global $edit_flow;
 	
-	//Always turn the calendar off regardless of site option setting
-	$edit_flow->calendar->module->options->enabled = 'off';
+	if ( $edit_flow->calendar->module->options->enabled && $edit_flow->calendar->module->options->enabled === 'on' ) {
+		//Do something if the Calendar module is enabled
+	}
 }
 ```
 
+#### ef_init
+
+**Description**
+
+Fires after edit_flow has loaded all modules and module options.
+
+Plugin authors can hook into this action to trigger functionaltiy after all Edit Flow module's have been loaded.
+
+**Examples**
+
+```
+add_action( 'ef_init', 'my_callback' );
+
+function my_callback() {
+	global $edit_flow;
+	
+	if( $edit_flow->calendar->create_post_cap == 'edit_posts' ) {
+		//If the create_post_cap for calendar is edit_posts, do something here
+	}
+}
+```
 
