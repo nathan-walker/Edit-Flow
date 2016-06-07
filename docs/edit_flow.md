@@ -115,3 +115,22 @@ function my_callback() {
 }
 ```
 
+Methods
+------
+
+#### get_module_by
+
+**Description**
+Get's a module by a given $key and $value
+
+
+**Usage**
+```<?php $edit_flow->get_module_by( $key, $value ); ?>```
+
+**Parameters**
+$key 
+(__string__) (__required__) Any of the [parameters found on a module](https://github.com/Automattic/Edit-Flow/blob/master/edit_flow.php#L216). 
+Examples: 'slug', 'name', 'title'
+
+$value
+(__string|int|array__) (__required__) A value of a [parameter found on a module](https://github.com/Automattic/Edit-Flow/blob/master/edit_flow.php#L216)
