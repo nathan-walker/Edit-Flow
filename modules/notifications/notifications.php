@@ -480,9 +480,15 @@ jQuery(document).ready(function($) {
 		$supported_post_types = $this->get_post_types_for_module( $this->module );
 		if ( !in_array( $post->post_type, $supported_post_types ) )
 			return;
+
+		// Create update status for publish_to_publish transitions
+		// Updates are ignored by default
+		if ( $old_status == 'publish' && $new_status == 'publish' ) {
+			$new_status = 'update';
+		}
 		
 		// No need to notify if it's a revision, auto-draft, or if post status wasn't changed
-		$ignored_statuses = apply_filters( 'ef_notification_ignored_statuses', array( $old_status, 'inherit', 'auto-draft' ), $post->post_type );
+		$ignored_statuses = apply_filters( 'ef_notification_ignored_statuses', array( $old_status, 'inherit', 'auto-draft', 'update' ), $post->post_type );
 		
 		if ( !in_array( $new_status, $ignored_statuses ) ) {
 			
@@ -535,6 +541,11 @@ jQuery(document).ready(function($) {
 				$subject = sprintf( __( '[%1$s] %2$s Published: "%3$s"', 'edit-flow' ), $blogname, $post_type, $post_title );
 				/* translators: 1: post type, 2: post id, 3. post title, 4. user name, 5. user email */
 				$body .= sprintf( __( '%1$s #%2$s "%3$s" was published by %4$s %5$s', 'edit-flow' ), $post_type, $post_id, $post_title, $current_user_display_name, $current_user_email ) . "\r\n";
+			} else if ( $new_status == 'update' ) {
+				/* translators: 1: site name, 2: post type, 3. post title */
+				$subject = sprintf( __( '[%1$s] %2$s Updated: "%3$s"', 'edit-flow' ), $blogname, $post_type, $post_title );
+				/* translators: 1: post type, 2: post id, 3. post title, 4. user name, 5. user email */
+				$body .= sprintf( __( '%1$s #%2$s "%3$s" was updated by %4$s %5$s', 'edit-flow' ), $post_type, $post_id, $post_title, $current_user_display_name, $current_user_email ) . "\r\n";
 			} else if ( $old_status == 'publish' ) {
 				/* translators: 1: site name, 2: post type, 3. post title */
 				$subject = sprintf( __( '[%1$s] %2$s Unpublished: "%3$s"', 'edit-flow' ), $blogname, $post_type, $post_title );

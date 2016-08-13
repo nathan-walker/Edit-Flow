@@ -206,12 +206,13 @@ class EF_Module {
 			'future' => __( 'Scheduled', 'edit-flow' ),
 			'private' => __( 'Private', 'edit-flow' ),
 			'pending' => __( 'Pending Review', 'edit-flow' ),
+			'update' => __( 'Updated', 'edit-flow' ),
 			'trash' => __( 'Trash', 'edit-flow' ),
 		);
 		
 		// Custom statuses only handles workflow statuses
 		if ( $this->module_enabled( 'custom_status' )
-			&& !in_array( $status, array( 'publish', 'future', 'private', 'trash' ) ) ) {
+			&& !in_array( $status, array( 'publish', 'future', 'private', 'trash', 'update' ) ) ) {
 			$status_object = $edit_flow->custom_status->get_custom_status_by( 'slug', $status );
 			if( $status_object && !is_wp_error( $status_object ) ) {
 				$status_friendly_name = $status_object->name;
